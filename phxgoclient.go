@@ -116,18 +116,20 @@ func (phx *PheonixGoSocket) GetChannel(topic string) (*Channel, error) {
 }
 
 func (phx *PheonixGoSocket) JoinChannel(topic string, payload interface{}) error {
-	channel, ok := phx.Channels[topic]
-	fmt.Printf("topic is %s", topic)
+	channel, _ := phx.Channels[topic]
+	fmt.Printf("topic is %s\n", topic)
 
-	if ok {
-		channel := channel.Join(payload)
-		channel.Read()
+	//if ok {
+	//channel := channel.Join(payload)
+	channel = channel.Join(payload)
+	channel.Read()
 
-		phx.Channels[topic] = channel
-		return nil
-	} else {
-		return errors.New("channel does not exist, failed to join")
-	}
+	phx.Channels[topic] = channel
+	return nil
+	//} else {
+	//	return errors.New("channel does not exist, failed to join")
+
+	//}
 }
 
 func (phx *PheonixGoSocket) OpenChannel(topic string) (*Channel, error) {

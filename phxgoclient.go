@@ -1,11 +1,11 @@
 package phxgoclient
 
 import (
+	"errors"
 	"log"
+	"net/url"
 	"os"
 	"os/signal"
-	"net/url"
-	"errors"
 	"time"
 )
 
@@ -21,6 +21,8 @@ type PheonixGoSocket struct {
 	Host   string
 	Schema string
 	Path   string
+	Query  string
+	Origin string
 
 	Status PhxGoSocketStatus
 
@@ -50,11 +52,13 @@ func (phx *PheonixGoSocket) ClosePheonixWebsocket() {
 }
 
 // Creates New Pheonix Websocket connection
-func NewPheonixWebsocket(Host string, Path string, Schema string, CustomAbsoultePath bool) PheonixGoSocket {
+func NewPheonixWebsocket(Host string, Path string, Schema string, Query string, CustomAbsoultePath bool, Origin string) PheonixGoSocket {
 	return PheonixGoSocket{
 		Host,
 		Schema,
 		Path,
+		Query,
+		Origin,
 		PhxGoClosed,
 		30 * time.Second,
 		CustomAbsoultePath,
@@ -82,9 +86,9 @@ func (phx PheonixGoSocket) Listen() error {
 		path = path + phx.Transport.ToPath()
 	}
 
-	u := url.URL{Scheme: phx.Schema, Host: phx.Host, Path: path}
+	u := url.URL{Scheme: phx.Schema, Host: phx.Host, Path: path, RawQuery: phx.Query}
 
-	client, err := Connect(u)
+	client, err := Connect(u, phx.Origin)
 
 	if err != nil {
 		return err
@@ -135,9 +139,9 @@ func (phx *PheonixGoSocket) OpenChannel(topic string) (*Channel, error) {
 		path = path + phx.Transport.ToPath()
 	}
 
-	u := url.URL{Scheme: phx.Schema, Host: phx.Host, Path: path}
+	u := url.URL{Scheme: phx.Schema, Host: phx.Host, Path: path, RawQuery: phx.Query}
 
-	client, err := Connect(u)
+	client, err := Connect(u, phx.Origin)
 
 	if err != nil {
 		log.Fatal("dial:", err)

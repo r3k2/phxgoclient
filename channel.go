@@ -1,23 +1,25 @@
 package phxgoclient
 
 import (
-	"net/url"
-	"github.com/gorilla/websocket"
-	"log"
-	"fmt"
-	"errors"
 	"encoding/json"
+	"errors"
+	"fmt"
+	"log"
+	"net/http"
+	"net/url"
 	"strings"
+
+	"github.com/gorilla/websocket"
 )
 
 type Client struct {
-	Url url.URL
+	Url    url.URL
 	Socket *websocket.Conn
 }
 
 type Channel struct {
-	State          State
-	Topic          string
+	State State
+	Topic string
 
 	InitialPayload interface{}
 
@@ -253,14 +255,17 @@ func (client Client) MakeAndJoinAChannel(topic string, payload interface{}) Chan
 	return ch
 }
 
-func Connect(url url.URL) (*Client, error) {
+func Connect(url url.URL, Origin string) (*Client, error) {
 	strUrl, errConv := checkUrl(url)
 
 	if errConv != nil {
 		return nil, errors.New("failed to parse url, no proper url format")
 	}
 
-	socket, _, err := websocket.DefaultDialer.Dial(strUrl, nil)
+	header := http.Header{}
+	header.Set("Origin", Origin)
+
+	socket, _, err := websocket.DefaultDialer.Dial(strUrl, header)
 	client := Client{
 		url,
 		socket,

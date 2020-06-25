@@ -14,6 +14,7 @@ import (
 
 type Client struct {
 	Url    url.URL
+	Origin string
 	Socket *websocket.Conn
 }
 
@@ -57,7 +58,7 @@ func (channel *Channel) Reconnect() {
 }
 
 func (channel *Channel) ForceReconnect() error {
-	client, err := Connect(channel.Client.Url)
+	client, err := Connect(channel.Client.Url, channel.Client.Origin)
 
 	channel.Client = *client
 

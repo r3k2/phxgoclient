@@ -268,6 +268,9 @@ func Connect(url url.URL, Origin string) (*Client, error) {
 	header := http.Header{}
 	header.Set("Origin", Origin)
 
+	log.Printf("Using: %s", strUrl)
+	log.Printf("With header: %s", header)
+
 	socket, _, err := websocket.DefaultDialer.Dial(strUrl, header)
 	client := Client{
 		url,

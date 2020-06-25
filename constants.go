@@ -6,7 +6,7 @@ type Event string
 type Transport string
 
 const (
-	PhxSocket   Transport = "/websocket"
+	PhxSocket   Transport = ""
 	PhxLongPool Transport = "/longpoll"
 )
 

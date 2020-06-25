@@ -55,8 +55,8 @@ func (phx *PheonixGoSocket) ClosePheonixWebsocket() {
 func NewPheonixWebsocket(Host string, Path string, Schema string, Query string, CustomAbsoultePath bool, Origin string) PheonixGoSocket {
 	return PheonixGoSocket{
 		Host,
-		Schema,
 		Path,
+		Schema,
 		Query,
 		Origin,
 		PhxGoClosed,

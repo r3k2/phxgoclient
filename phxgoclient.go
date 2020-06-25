@@ -2,6 +2,7 @@ package phxgoclient
 
 import (
 	"errors"
+	"fmt"
 	"log"
 	"net/url"
 	"os"
@@ -116,6 +117,7 @@ func (phx *PheonixGoSocket) GetChannel(topic string) (*Channel, error) {
 
 func (phx *PheonixGoSocket) JoinChannel(topic string, payload interface{}) error {
 	channel, ok := phx.Channels[topic]
+	fmt.Printf("topic is %s", topic)
 
 	if ok {
 		channel := channel.Join(payload)

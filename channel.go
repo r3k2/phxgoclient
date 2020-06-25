@@ -59,7 +59,7 @@ func (channel *Channel) Reconnect() {
 
 func (channel *Channel) ForceReconnect() error {
 	//temp as POC
-	channel.Client.Origin = "https://hubs.mozilla.com"
+	//channel.Client.Origin = "https://hubs.mozilla.com"
 	client, err := Connect(channel.Client.Url, channel.Client.Origin)
 
 	channel.Client = *client
@@ -271,6 +271,7 @@ func Connect(url url.URL, Origin string) (*Client, error) {
 	socket, _, err := websocket.DefaultDialer.Dial(strUrl, header)
 	client := Client{
 		url,
+		Origin,
 		socket,
 	}
 

@@ -19,8 +19,8 @@ const (
 
 type PheonixGoSocket struct {
 	Host   string
-	Schema string
 	Path   string
+	Schema string
 	Query  string
 	Origin string
 
